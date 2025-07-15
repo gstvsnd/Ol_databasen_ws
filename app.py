@@ -30,5 +30,3 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# Delar av detta har tagits fram med hjälp av AI-verktyg
