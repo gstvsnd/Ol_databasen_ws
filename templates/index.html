@@ -5,46 +5,54 @@
     <title>Ölprovar-tävling</title>
 </head>
 <body>
+    <!-- Försök till en snygg framsida -->
     <h1>Julölsdatabasen</h1>
 
     <p>
-        Denna sida är tänkt att agera databas för julöler (och kanske andra öler) vid provningar (eller om man ser det som tävlingar).<br>
-        Min förhoppning är att den ska lösa problemet med att flera köper samma öl genom att anonymt jämföra om en öl man försöker registrera redan finns för den gällande provningen.<br>
+        Denna sida är tänkt att agera databas för julöler (och kanske andra öler) 
+        vid provningar (eller om man ser det som tävlingar).<br>
+        Min förhoppning är att den ska lösa prSoblemet med att flera köper samma 
+        öl genom att anonymt jämföra om en öl man försöker registrera redan finns 
+        för den gällande provningen.<br>
         Ett plus är att det blir en plats att spara tidigare öler och VINNARE!
     </p>
 
-    <h2>Julölsprovning 2023</h2>
-    <p>Västerås var bäst!</p>
+    <!-- Skapa en tävlingsrubrik om ny tävling registreras -->
+    {% for competition, beers in comp_grouped_beers.items() %}
+    <h2>{{ competition if competition else "Okänd tävling" }}</h2>
     <ul>
-        <li>Munken - Hantverksbryggeriet</li>
-        <li>Narren - Hantverksbryggeriet</li>
+        {% for beer in beers %}
+            <li>{{ beer.name }}, {{ beer.brewery }} - {{ beer.sign }}</li>
+        {% endfor %}
     </ul>
+    {% endfor %}
 
-    <h2>Julölsprovning 2024</h2>
-    <p>Västerås var inte bäst!</p>
-
-    <h2>Julölsprovning 2025</h2>
-    <p>Kommer Västerås vara bäst igen?</p>
     <h2>Registrera en ny öl</h2>
-
+    <!-- Hämtar öl från användare och skickar denne till /add_beer som är en topic 
+     som hanteras i app.py -->
     <form method="POST" action="/add_beer">
-    <label for="name">Ölnamn:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
+        <label for="name">Ölnamn:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
 
-    <label for="brewery">Bryggeri:</label><br>
-    <input type="text" id="brewery" name="brewery" required><br><br>
+        <label for="brewery">Bryggeri:</label><br>
+        <input type="text" id="brewery" name="brewery" required><br><br>
 
-    <label for="competition">Tävling:</label><br>
-    <input type="text" id="competition" name="competition" required><br><br>
+        <label for="competition">Tävling:</label><br>
+        <input type="text" id="competition" name="competition" required><br><br>
 
-    <input type="submit" value="Registrera">
+        <label for="sign">Vem registrerar:</label><br>
+        <input type="text" id="sign" name="sign" required>
+    
+        <!-- Skulle kunna behövas en kod för att inte alla ska komma åt databasen -->
+
+        <input type="submit" value="Registrera">
     </form>
 
     <h2>Registrerade öler</h2>
     {% if beers %}
         <ul>
             {% for beer in beers %}
-                <li>{{ beer.name }} - {{ beer.brewery }} ({{ beer.competition }})</li>
+                <li>{{ beer.name }}, {{ beer.brewery }}. Registrerad vid: {{ beer.competition }} av {{ beer.sign }}</li>
             {% endfor %}
         </ul>
     {% else %}
