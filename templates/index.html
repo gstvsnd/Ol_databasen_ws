@@ -25,5 +25,32 @@
 
     <h2>Julölsprovning 2025</h2>
     <p>Kommer Västerås vara bäst igen?</p>
+    <h2>Registrera en ny öl</h2>
+
+    <form method="POST" action="/add_beer">
+    <label for="name">Ölnamn:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="brewery">Bryggeri:</label><br>
+    <input type="text" id="brewery" name="brewery" required><br><br>
+
+    <label for="competition">Tävling:</label><br>
+    <input type="text" id="competition" name="competition" required><br><br>
+
+    <input type="submit" value="Registrera">
+    </form>
+
+    <h2>Registrerade öler</h2>
+    {% if beers %}
+        <ul>
+            {% for beer in beers %}
+                <li>{{ beer.name }} - {{ beer.brewery }} ({{ beer.competition }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Inga öler har registrerats ännu.</p>
+    {% endif %}
+
+
 </body>
 </html>
