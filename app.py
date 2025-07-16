@@ -14,12 +14,16 @@ db = SQLAlchemy(app)
 
 # Modell
 class Beer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    brewery = db.Column(db.String(100), nullable=False)
-    competition = db.Column(db.String(100), nullable=False)
-    sign = db.Column(db.String(100), nullable=True)
-    # Hur gör man om man vill lägga till kolumn?
+    # Viktigaste komponenterna
+    id = db.Column(db.Integer, primary_key=True)                  # ID
+    name = db.Column(db.String(100), nullable=False)              # Namn på Öl
+    brewery = db.Column(db.String(100), nullable=False)            # Bryggeri - ursprung
+    competition = db.Column(db.String(100), nullable=False)       # Tävlingsevenemang
+
+    # Info som kan vara kul (men inte nödvändig)
+    sign = db.Column(db.String(100), nullable=True)               # Vem som Bidrog med Ölen
+    score = db.Column(db.Float, nullable=True)                    # Betyg (kanske 1-10)
+    comment = db.Column(db.Text, nullable=True)                   # Kommentar (hur lång som hellst)
 
 # Databasen skapas
 with app.app_context():
@@ -29,16 +33,14 @@ with app.app_context():
 def index():
     beers = Beer.query.all()
 
-    comp_grouped_beers = defaultdict(list)
-    sign_grouped_beers = defaultdict(list) 
-    # Listor kommer att behöva sorteras!
-    
+    grouped_beers = defaultdict(lambda: defaultdict(list))
     for beer in beers:
-        comp_grouped_beers[beer.competition].append(beer)
-        sign_grouped_beers[beer.sign].append(beer)
+        grouped_beers[beer.competition][beer.sign].append(beer)
+    # Listor kommer att behöva sorteras!
+
 
     # grouped_beers är en dict med key = sign, value = lista med beers
-    return render_template('index.html', beers=beers, comp_grouped_beers=comp_grouped_beers, sign_grouped_beers=sign_grouped_beers)
+    return render_template('index.html', beers=beers, grouped_beers=grouped_beers)
 
 @app.route('/add_beer', methods=['POST'])
 def add_beer():

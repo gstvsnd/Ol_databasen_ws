@@ -18,31 +18,44 @@
     </p>
 
     <!-- Skapa en tävlingsrubrik om ny tävling registreras -->
-    {% for competition, beers in comp_grouped_beers.items() %}
-    <h2>{{ competition if competition else "Okänd tävling" }}</h2>
-    <ul>
-        {% for beer in beers %}
-            <li>{{ beer.name }}, {{ beer.brewery }} - {{ beer.sign }}</li>
+    {% for competition, sign_dict in grouped_beers.items() %}
+        <h2>{{ competition if competition else "Okänd tävling" }}</h2>
+
+        <!-- Alla användare inom tävlingen -->
+        {% for sign, beers in sign_dict.items() %}
+            <h3>{{ sign if sign else "Okänd användare" }}</h3>
+            <ul>
+                {% for beer in beers %}
+                    <li>{{ beer.name }} - {{ beer.brewery }}</li>
+                {% endfor %}
+            </ul>
         {% endfor %}
-    </ul>
     {% endfor %}
+
 
     <h2>Registrera en ny öl</h2>
     <!-- Hämtar öl från användare och skickar denne till /add_beer som är en topic 
      som hanteras i app.py -->
     <form method="POST" action="/add_beer">
-        <label for="name">Ölnamn:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
-
-        <label for="brewery">Bryggeri:</label><br>
-        <input type="text" id="brewery" name="brewery" required><br><br>
-
-        <label for="competition">Tävling:</label><br>
+        <label for="competition"><span style="color: red;">*</span>Tävling:</label><br>
         <input type="text" id="competition" name="competition" required><br><br>
 
-        <label for="sign">Vem registrerar:</label><br>
-        <input type="text" id="sign" name="sign" required>
+        <label for="name"><span style="color: red;">*</span>Namn på Öl:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="brewery"><span style="color: red;">*</span>Bryggeri:</label><br>
+        <input type="text" id="brewery" name="brewery" required><br><br>
+        <!-- Ibland saknas bryggeri på Systembolagets webbsida -->
+
+        <label for="score">Betyg:</label><br>
+        <input type="text" id="score" name="score"><br><br>
+
+        <label for="comment">Kommentar:</label><br>
+        <input type="text" id="comment" name="comment"><br><br>
     
+        <label for="sign">Deltagare:</label><br>
+        <input type="text" id="sign" name="sign"><br><br>
+
         <!-- Skulle kunna behövas en kod för att inte alla ska komma åt databasen -->
 
         <input type="submit" value="Registrera">
