@@ -19,11 +19,11 @@
 
     <!-- Skapa en tävlingsrubrik om ny tävling registreras -->
     {% for competition, sign_dict in grouped_beers.items() %}
-        <h2>{{ competition if competition else "Okänd tävling" }}</h2>
+        <h2>{{ competition }}</h2>
 
         <!-- Alla användare inom tävlingen -->
         {% for sign, beers in sign_dict.items() %}
-            <h3>{{ sign if sign else "Okänd användare" }}</h3>
+            <h3>{{ sign if sign else "Okända deltagare" }}</h3>
             <ul>
                 {% for beer in beers %}
                     <li>{{ beer.name }} - {{ beer.brewery }}</li>
@@ -47,12 +47,15 @@
         <input type="text" id="brewery" name="brewery" required><br><br>
         <!-- Ibland saknas bryggeri på Systembolagets webbsida -->
 
-        <label for="score">Betyg:</label><br>
-        <input type="text" id="score" name="score"><br><br>
+        <!-- 
+        Svårt att svara på nu: 
+            <label for="score">Betyg:</label><br>
+            <input type="text" id="score" name="score"><br><br> 
 
-        <label for="comment">Kommentar:</label><br>
-        <input type="text" id="comment" name="comment"><br><br>
-    
+            <label for="comment">Kommentar:</label><br>
+            <input type="text" id="comment" name="comment"><br><br>
+        -->
+
         <label for="sign">Deltagare:</label><br>
         <input type="text" id="sign" name="sign"><br><br>
 
@@ -71,6 +74,20 @@
     {% else %}
         <p>Inga öler har registrerats ännu.</p>
     {% endif %}
+
+    <!--
+    Kvar att göra
+        KRITISKT
+        * Jämföra namn och tävlingar bättre (ex: stora och små bokstäver försvårar)
+        Viktigt
+        * Ändra och ta bort öler 
+        Trevligt
+        * Sortera i listor
+        * Presentera öler och tävlingar bättre/snyggare
+        * Göra sidan lättare att använda
+        Kuriosa
+        * Qr koder
+    -->
 
 
 </body>

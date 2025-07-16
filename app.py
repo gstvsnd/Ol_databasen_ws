@@ -24,6 +24,7 @@ class Beer(db.Model):
     sign = db.Column(db.String(100), nullable=True)               # Vem som Bidrog med Ölen
     score = db.Column(db.Float, nullable=True)                    # Betyg (kanske 1-10)
     comment = db.Column(db.Text, nullable=True)                   # Kommentar (hur lång som hellst)
+    code = db.Column(db.String(100), nullable=True)               # Kan vara fancy i framtiden
 
 # Databasen skapas
 with app.app_context():
